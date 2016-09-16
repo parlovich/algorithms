@@ -1,3 +1,5 @@
+import edu.princeton.cs.algs4.StdRandom;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -86,7 +88,7 @@ public class Deque<Item> implements Iterable<Item> {
     // remove and return the item from the front
     public Item removeFirst() {
         if (first == null) {
-            throw new UnsupportedOperationException("Deque is empty");
+            throw new NoSuchElementException("Deque is empty");
         }
         Node item = first;
         first = first.next;
@@ -103,7 +105,7 @@ public class Deque<Item> implements Iterable<Item> {
     // remove and return the item from the end
     public Item removeLast() {
         if (last == null) {
-            throw new UnsupportedOperationException("Deque is empty");
+            throw new NoSuchElementException("Deque is empty");
         }
         Node item = last;
         last = last.prev;
