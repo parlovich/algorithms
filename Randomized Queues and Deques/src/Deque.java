@@ -125,22 +125,30 @@ public class Deque<Item> implements Iterable<Item> {
     // unit testing
     public static void main(String[] args) {
         Deque<Double> q = new Deque<>();
-        Double[] val = new Double[] {0.0, 0.8, 0.0, 0.1, 0.1, 0.0};
+        double[] val = new double[] {0.0, 0.8, 0.0, 0.1, 0.1, 0.0};
 
-        for (int i = 0; i < 1000; i++) q.addLast(val[StdRandom.uniform(val.length)]);
-        for (int i = 0; i < 1000; i++) q.removeLast();
+        for (int i = 0; i < 1000; i++)
+            q.addLast(val[StdRandom.uniform(val.length)]);
+        for (int i = 0; i < 1000; i++)
+            q.removeLast();
         assert q.isEmpty();
 
-        for (int i = 0; i < 1000; i++) q.addFirst(val[StdRandom.uniform(val.length)]);
-        for (int i = 0; i < 1000; i++) q.removeFirst();
+        for (int i = 0; i < 1000; i++)
+            q.addFirst(val[StdRandom.uniform(val.length)]);
+        for (int i = 0; i < 1000; i++)
+            q.removeFirst();
         assert q.isEmpty();
 
-        for (int i = 0; i < 1000; i++) q.addFirst(val[StdRandom.uniform(val.length)]);
-        for (int i = 0; i < 1000; i++) q.removeLast();
+        for (int i = 0; i < 1000; i++)
+            q.addFirst(val[StdRandom.uniform(val.length)]);
+        for (int i = 0; i < 1000; i++)
+            q.removeLast();
         assert q.isEmpty();
 
-        for (int i = 0; i < 1000; i++) q.addLast(val[StdRandom.uniform(val.length)]);
-        for(int i = 0; i < 1000; i++) q.removeFirst();
+        for (int i = 0; i < 1000; i++)
+            q.addLast(val[StdRandom.uniform(val.length)]);
+        for (int i = 0; i < 1000; i++)
+            q.removeFirst();
         assert q.isEmpty();
     }
 }
