@@ -15,7 +15,7 @@ public class Subset {
             if ("-".equals(s)) break;
             q.enqueue(s);
         }
-        for(int i = 0; i < k; i++) {
+        for (int i = 0; i < k; i++) {
             StdOut.println(q.dequeue());
         }
     }

@@ -4,12 +4,12 @@ import java.util.NoSuchElementException;
 public class Deque<Item> implements Iterable<Item> {
     private Node first = null;
     private Node last = null;
-    int size = 0;
+    private int size = 0;
 
     private class Node {
-        Item item;
-        Node next;
-        Node prev;
+        private Item item;
+        private Node next;
+        private Node prev;
     }
 
     private class DequeIterator implements Iterator<Item> {
@@ -22,7 +22,7 @@ public class Deque<Item> implements Iterable<Item> {
         @Override
         public Item next() {
             if (current == null) {
-                throw new NoSuchElementException("Deque is empty");
+                throw new NoSuchElementException();
             }
             Item item = current.item;
             current = current.next;
@@ -36,7 +36,7 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     // construct an empty deque
-    public Deque(){
+    public Deque() {
     }
 
     // is the deque empty?
@@ -57,11 +57,12 @@ public class Deque<Item> implements Iterable<Item> {
         Node oldFirst = first;
         first = new Node();
         first.item = item;
-        first.next = oldFirst;
         if (size == 0)
             last = first;
-        else
+        else {
+            first.next = oldFirst;
             oldFirst.prev = first;
+        }
         size++;
     }
 
@@ -75,8 +76,10 @@ public class Deque<Item> implements Iterable<Item> {
         last.item = item;
         if (size == 0)
             first = last;
-        else
+        else {
+            last.prev = oldLast;
             oldLast.next = last;
+        }
         size++;
     }
 
@@ -121,15 +124,23 @@ public class Deque<Item> implements Iterable<Item> {
 
     // unit testing
     public static void main(String[] args) {
-        Deque<String> deque = new Deque<>();
-        deque.addFirst("3");
-        deque.addFirst("2");
-        deque.addFirst("1");
+        Deque<Double> q = new Deque<>();
+        Double[] val = new Double[] {0.0, 0.8, 0.0, 0.1, 0.1, 0.0};
 
-        deque.size();
-        String s = deque.removeFirst();
-        s = deque.removeLast();
-        s = deque.removeFirst();
-        //assert (deque.size() == 0);
+        for (int i = 0; i < 1000; i++) q.addLast(val[StdRandom.uniform(val.length)]);
+        for (int i = 0; i < 1000; i++) q.removeLast();
+        assert q.isEmpty();
+
+        for (int i = 0; i < 1000; i++) q.addFirst(val[StdRandom.uniform(val.length)]);
+        for (int i = 0; i < 1000; i++) q.removeFirst();
+        assert q.isEmpty();
+
+        for (int i = 0; i < 1000; i++) q.addFirst(val[StdRandom.uniform(val.length)]);
+        for (int i = 0; i < 1000; i++) q.removeLast();
+        assert q.isEmpty();
+
+        for (int i = 0; i < 1000; i++) q.addLast(val[StdRandom.uniform(val.length)]);
+        for(int i = 0; i < 1000; i++) q.removeFirst();
+        assert q.isEmpty();
     }
 }

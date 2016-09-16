@@ -1,4 +1,3 @@
-import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.Iterator;
@@ -49,7 +48,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         for (; i % items.length != tail; i++) {
             items[(i - 1) % items.length] = items[i % items.length ];
         }
-        tail = tail == 0 ? tail = items.length - 1 : tail - 1;
+        tail = tail == 0 ? items.length - 1 : tail - 1;
         items[tail] = null;
         size--;
 
@@ -82,11 +81,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     private class RandomizedQueueIterator implements Iterator<Item> {
-        int[] indexes = new int[size];
-        int cur = 0;
+        private int[] indexes = new int[size];
+        private int cur = 0;
 
         public RandomizedQueueIterator() {
-            for(int i = 0; i < size; i++) indexes[i] = i;
+            for (int i = 0; i < size; i++) indexes[i] = i;
             StdRandom.shuffle(indexes);
         }
 
@@ -97,6 +96,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         @Override
         public Item next() {
+            if (cur >= size) {
+                throw new NoSuchElementException();
+            }
             return items[(head + indexes[cur++]) % items.length];
         }
 
@@ -108,25 +110,5 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // unit testing
     public static void main(String[] args) {
-        RandomizedQueue<String> q = new RandomizedQueue<>();
-        q.enqueue("AA");
-        q.enqueue("BB");
-        q.enqueue("CC");
-        q.enqueue("DD");
-        q.enqueue("EE");
-        q.enqueue("FF");
-        q.enqueue("GG");
-        for (String s : q) StdOut.println(s);
-        for(int i = 0; i < 5; i++)
-            StdOut.println("Dequeue " + q.dequeue());
-        for (String s : q) StdOut.println(s);
-        q.enqueue("AA1");
-        q.enqueue("BB1");
-        q.enqueue("CC1");
-        q.enqueue("DD1");
-        q.enqueue("EE1");
-        q.enqueue("FF1");
-        q.enqueue("GG1");
-        for (String s : q) StdOut.println(s);
     }
 }
