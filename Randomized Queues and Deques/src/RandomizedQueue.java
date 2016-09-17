@@ -42,13 +42,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             throw new NoSuchElementException("Queue is empty");
         }
         int i = (head + StdRandom.uniform(size)) % items.length;
-        Item item = items[i++];
-
-        // Shift items
-        for (; i % items.length != tail; i++) {
-            items[(i - 1) % items.length] = items[i % items.length ];
-        }
+        Item item = items[i];
+        // replace removed item with one from tail
         tail = tail == 0 ? items.length - 1 : tail - 1;
+        items[i] = items[tail];
         items[tail] = null;
         size--;
 
@@ -110,5 +107,13 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // unit testing
     public static void main(String[] args) {
+        RandomizedQueue<Double> q = new RandomizedQueue<>();
+        double[] val = new double[] {0.0, 0.8, 0.0, 0.1, 0.1, 0.0};
+
+        for (int i = 0; i < 1000; i++)
+            q.enqueue(val[StdRandom.uniform(val.length)]);
+        for (int i = 0; i < 1000; i++)
+            q.dequeue();
+        assert q.isEmpty();
     }
 }
