@@ -1,3 +1,5 @@
+import edu.princeton.cs.algs4.StdRandom;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -5,32 +7,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     private int size = 0;
     private int head = 0;
     private int tail = 0;
-    private Item[] items = (Item[]) new Object[1];
-
-    private class RandomizedQueueIterator implements Iterator<Item> {
-        int[] indexes = new int[size];
-
-        public RandomizedQueueIterator() {
-            for(int i = 0; i < size; i++) {
-                indexes[i] = i;
-            }
-        }
-
-        @Override
-        public boolean hasNext() {
-            return false;
-        }
-
-        @Override
-        public Item next() {
-            return null;
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException("Removing is not supported");
-        }
-    }
+    private Item[] items = (Item[]) new Object[2];
 
     // construct an empty randomized queue
     public RandomizedQueue() {
@@ -38,12 +15,12 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // is the queue empty?
     public boolean isEmpty() {
-        return true;
+        return size == 0;
     }
 
     // return the number of items on the queue
     public int size() {
-        return 0;
+        return size;
     }
 
     // add the item
@@ -51,10 +28,12 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (item == null) {
             throw new NullPointerException("item must not be null");
         }
-        if (size == items.length) resize(2 * items.length);
-        size++;
+        if (size == items.length)
+            resize(2 * items.length);
         items[tail++] = item;
-        if (tail >= items.length) tail = tail % items.length;
+        if (tail == items.length)
+            tail = 0;
+        size++;
     }
 
     // remove and return a random item
@@ -62,8 +41,18 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (size == 0) {
             throw new NoSuchElementException("Queue is empty");
         }
-        if (size > 0 && size == items.length / 4) resize(items.length / 2);
-        return null;
+        int i = (head + StdRandom.uniform(size)) % items.length;
+        Item item = items[i];
+        // replace removed item with one from tail
+        tail = tail == 0 ? items.length - 1 : tail - 1;
+        items[i] = items[tail];
+        items[tail] = null;
+        size--;
+
+        // Shrink if needed
+        if (size > 0 && size == items.length / 4)
+            resize(items.length / 2);
+        return item;
     }
 
     // return (but do not remove) a random item
@@ -71,8 +60,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (size == 0) {
             throw new NoSuchElementException("Queue is empty");
         }
-        if (size > 0 && size == items.length / 4) resize(items.length / 2);
-        return null;
+        return items[(head + StdRandom.uniform(size)) % items.length];
     }
 
     // return an independent iterator over items in random order
@@ -83,12 +71,49 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     private void resize(int capacity) {
         Item[] copy = (Item[]) new Object[capacity];
         for (int i = 0; i < size(); i++)
-            copy[i] = items[i];
+            copy[i] = items[(head + i) % items.length];
         items = copy;
+        head = 0;
+        tail = size;
+    }
+
+    private class RandomizedQueueIterator implements Iterator<Item> {
+        private int[] indexes = new int[size];
+        private int cur = 0;
+
+        public RandomizedQueueIterator() {
+            for (int i = 0; i < size; i++) indexes[i] = i;
+            StdRandom.shuffle(indexes);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return cur < size;
+        }
+
+        @Override
+        public Item next() {
+            if (cur >= size) {
+                throw new NoSuchElementException();
+            }
+            return items[(head + indexes[cur++]) % items.length];
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Removing is not supported");
+        }
     }
 
     // unit testing
     public static void main(String[] args) {
+        RandomizedQueue<Double> q = new RandomizedQueue<>();
+        double[] val = new double[] {0.0, 0.8, 0.0, 0.1, 0.1, 0.0};
 
+        for (int i = 0; i < 1000; i++)
+            q.enqueue(val[StdRandom.uniform(val.length)]);
+        for (int i = 0; i < 1000; i++)
+            q.dequeue();
+        assert q.isEmpty();
     }
 }
