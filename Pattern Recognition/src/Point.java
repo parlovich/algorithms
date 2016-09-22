@@ -1,7 +1,4 @@
 import java.util.Comparator;
-
-import static java.lang.Double.MAX_VALUE;
-import java.util.Comparator;
 import edu.princeton.cs.algs4.StdDraw;
 
 public class Point implements Comparable<Point> {
@@ -52,8 +49,9 @@ public class Point implements Comparable<Point> {
      * @return the slope between this point and the specified point
      */
     public double slopeTo(Point that) {
-        if (that.x == this.x && that.y == that.y) return -MAX_VALUE;
-        if (that.x == this.x) return MAX_VALUE;
+        if (that.x == this.x && that.y == that.y) return Double.NEGATIVE_INFINITY;
+        if (that.x == this.x) return Double.POSITIVE_INFINITY;
+        if (that.y == this.y) return +0.0;
         return (that.y - this.y) / (that.x - this.x);
     }
 
@@ -70,7 +68,7 @@ public class Point implements Comparable<Point> {
      *         argument point
      */
     public int compareTo(Point that) {
-        if (that.y == this.y && that.y == this.y)
+        if (this.y == that.y && this.x == that.x)
             return 0;
         if (this.y < that.y || (this.y == that.y && this.x < that.x))
             return -1;
@@ -85,8 +83,12 @@ public class Point implements Comparable<Point> {
      */
     public Comparator<Point> slopeOrder() {
         /* YOUR CODE HERE */
-        //TODO
-        return null;
+        return new Comparator<Point>() {
+            @Override
+            public int compare(Point o1, Point o2) {
+                return ((Double)slopeTo(o1)).compareTo(slopeTo(o2));
+            }
+        };
     }
 
 
