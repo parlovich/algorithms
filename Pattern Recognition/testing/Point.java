@@ -1,3 +1,13 @@
+/******************************************************************************
+ *  Compilation:  javac Point.java
+ *  Execution:    java Point
+ *  Dependencies: none
+ *  
+ *  An immutable data type for points in the plane.
+ *  For use on Coursera, Algorithms Part I programming assignment.
+ *
+ ******************************************************************************/
+
 import java.util.Comparator;
 import edu.princeton.cs.algs4.StdDraw;
 
@@ -39,9 +49,9 @@ public class Point implements Comparable<Point> {
 
     /**
      * Returns the slope between this point and the specified point.
-     * Formally, if the two p are (x0, y0) and (x1, y1), then the slope
+     * Formally, if the two points are (x0, y0) and (x1, y1), then the slope
      * is (y1 - y0) / (x1 - x0). For completeness, the slope is defined to be
-     * +0.0 if the line segment connecting the two p is horizontal;
+     * +0.0 if the line segment connecting the two points is horizontal;
      * Double.POSITIVE_INFINITY if the line segment is vertical;
      * and Double.NEGATIVE_INFINITY if (x0, y0) and (x1, y1) are equal.
      *
@@ -49,14 +59,11 @@ public class Point implements Comparable<Point> {
      * @return the slope between this point and the specified point
      */
     public double slopeTo(Point that) {
-        if (that.x == this.x && that.y == this.y) return Double.NEGATIVE_INFINITY;
-        if (that.x == this.x) return Double.POSITIVE_INFINITY;
-        if (that.y == this.y) return +0.0;
-        return ((double) that.y - (double) this.y) / ((double)that.x - (double)this.x);
+        /* YOUR CODE HERE */
     }
 
     /**
-     * Compares two p by y-coordinate, breaking ties by x-coordinate.
+     * Compares two points by y-coordinate, breaking ties by x-coordinate.
      * Formally, the invoking point (x0, y0) is less than the argument point
      * (x1, y1) if and only if either y0 < y1 or if y0 = y1 and x0 < x1.
      *
@@ -68,27 +75,17 @@ public class Point implements Comparable<Point> {
      *         argument point
      */
     public int compareTo(Point that) {
-        if (this.y == that.y && this.x == that.x)
-            return 0;
-        if (this.y < that.y || (this.y == that.y && this.x < that.x))
-            return -1;
-        return 1;
+        /* YOUR CODE HERE */
     }
 
     /**
-     * Compares two p by the slope they make with this point.
+     * Compares two points by the slope they make with this point.
      * The slope is defined as in the slopeTo() method.
      *
-     * @return the Comparator that defines this ordering on p
+     * @return the Comparator that defines this ordering on points
      */
     public Comparator<Point> slopeOrder() {
         /* YOUR CODE HERE */
-        return new Comparator<Point>() {
-            @Override
-            public int compare(Point o1, Point o2) {
-                return ((Double)slopeTo(o1)).compareTo(slopeTo(o2));
-            }
-        };
     }
 
 
@@ -104,6 +101,10 @@ public class Point implements Comparable<Point> {
         return "(" + x + ", " + y + ")";
     }
 
+    /**
+     * Unit tests the Point data type.
+     */
     public static void main(String[] args) {
+        /* YOUR CODE HERE */
     }
 }
