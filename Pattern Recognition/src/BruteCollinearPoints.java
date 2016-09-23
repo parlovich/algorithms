@@ -1,4 +1,5 @@
-import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdDraw;
 
 import java.util.ArrayList;
@@ -7,32 +8,41 @@ import java.util.List;
 
 public class BruteCollinearPoints {
 
-    Point[] p;
-    List<LineSegment> lineSegments = new ArrayList<>();
+    private List<LineSegment> lineSegments = new ArrayList<>();
 
     // finds all line segments containing 4 p
     public BruteCollinearPoints(Point[] points) {
         if (points == null) {
             throw new NullPointerException("point must not be null");
         }
-        p = new Point[points.length];
         for (int i = 0; i < points.length; i++) {
-            if (points[i] == null) throw new NullPointerException("p must not contain null");
-            p[i] = points[i];
+            if (points[i] == null)
+                throw new NullPointerException("p must not contain null");
         }
 
-        Arrays.sort(p);
-
-        for (int i = 0; i < p.length - 3; i++) {
-            for (int j = i + 1; j < p.length - 2; j++) {
-                double slop1 = p[i].slopeTo(p[j]);
-                for (int k = j + 1; k < p.length - 1; k++) {
-                    double slop2 = p[i].slopeTo(p[k]);
-                    if (slop1 != slop2) continue;
-                    for (int t = k + 1; t < p.length; t++) {
-                        double slop3 = p[i].slopeTo(p[t]);
-                        if (slop2 == slop3) {
-                            lineSegments.add(new LineSegment(p[i], p[t]));
+        for (int i = 0; i < points.length - 3; i++) {
+            for (int j = i + 1; j < points.length - 2; j++) {
+                double slop1 = points[i].slopeTo(points[j]);
+                if (Double.compare(slop1, Double.NEGATIVE_INFINITY) == 0) {
+                    throw new IllegalArgumentException("two identical points");
+                }
+                for (int k = j + 1; k < points.length - 1; k++) {
+                    double slop2 = points[i].slopeTo(points[k]);
+                    if (Double.compare(slop2, Double.NEGATIVE_INFINITY) == 0) {
+                        throw new IllegalArgumentException("two identical points");
+                    }
+                    if (Double.compare(slop1, slop2) != 0) continue;
+                    for (int t = k + 1; t < points.length; t++) {
+                        double slop3 = points[i].slopeTo(points[t]);
+                        if (Double.compare(slop3, Double.NEGATIVE_INFINITY) == 0) {
+                            throw new IllegalArgumentException("two identical points");
+                        }
+                        if (Double.compare(slop2, slop3) == 0) {
+                            Point[] segmentPoints = new Point[]{
+                                    points[i], points[j], points[k], points[t]};
+                            Arrays.sort(segmentPoints);
+                            lineSegments.add(new LineSegment(
+                                    segmentPoints[0], segmentPoints[3]));
                         }
                     }
                 }
