@@ -20,13 +20,13 @@ public class BruteCollinearPoints {
                 throw new NullPointerException("p must not contain null");
         }
 
-        for (int i = 0; i < points.length - 3; i++) {
-            for (int j = i + 1; j < points.length - 2; j++) {
+        for (int i = 0; i < points.length; i++) {
+            for (int j = i + 1; j < points.length; j++) {
                 double slop1 = points[i].slopeTo(points[j]);
                 if (Double.compare(slop1, Double.NEGATIVE_INFINITY) == 0) {
                     throw new IllegalArgumentException("two identical points");
                 }
-                for (int k = j + 1; k < points.length - 1; k++) {
+                for (int k = j + 1; k < points.length; k++) {
                     double slop2 = points[i].slopeTo(points[k]);
                     if (Double.compare(slop2, Double.NEGATIVE_INFINITY) == 0) {
                         throw new IllegalArgumentException("two identical points");
