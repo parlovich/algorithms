@@ -1,4 +1,7 @@
-import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.StdOut;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
     private int[][] blocks;
@@ -55,6 +58,7 @@ public class Board {
     // does this board equal y?
     @Override
     public boolean equals(Object y) {
+        if (this == y) return true;
         if (!(y instanceof Board)) return false;
         if (n != ((Board) y).dimension()) return false;
         for (int i = 0; i < n; i++) {
@@ -68,8 +72,29 @@ public class Board {
 
     // all neighboring boards
     public Iterable<Board> neighbors() {
-        //TODO
-        return null;
+        List<Board> neighbours = new ArrayList<>();
+        int i, j = 0;
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < n && blocks[i][j] != 0; j++);
+            if (j < n) break;
+        }
+
+        if (i > 0) neighbours.add(createNeighbour(i, j, i - 1, j));
+        if (i < n - 1) neighbours.add(createNeighbour(i, j, i + 1, j));
+        if (j > 0) neighbours.add(createNeighbour(i, j, i, j - 1));
+        if (j < n - 1) neighbours.add(createNeighbour(i, j, i, j + 1));
+
+        return neighbours;
+    }
+
+    private Board createNeighbour(int i0, int j0, int ii, int jj) {
+        int[][] aux = new int[n][n];
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                aux[i][j] = blocks[i][j];
+        aux[i0][j0] = aux[ii][jj];
+        aux[ii][jj] = 0;
+        return new Board(aux);
     }
 
     // string representation of this board (in the output format specified below)
@@ -97,5 +122,10 @@ public class Board {
         assert b.hamming() == 5;
         assert b.manhattan() == 10;
         StdOut.println(b);
+
+        for(Board board : b.neighbors()) {
+            StdOut.println("----------");
+            StdOut.println(board);
+        }
     }
 }
