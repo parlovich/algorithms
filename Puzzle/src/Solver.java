@@ -1,6 +1,4 @@
-import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.MinPQ;
-import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -8,23 +6,25 @@ import java.util.Comparator;
 public class Solver {
     private SearchNode solution = null;
 
-    private final Comparator<SearchNode> nodePriorityComparatorHamming = new Comparator<SearchNode>() {
-        @Override
-        public int compare(SearchNode o1, SearchNode o2) {
-            int p1 = o1.moves + o1.board.hamming();
-            int p2 = o2.moves + o2.board.hamming();
-            return Integer.compare(p1, p2);
-        }
-    };
+    private final Comparator<SearchNode> nodePriorityComparatorHamming =
+            new Comparator<SearchNode>() {
+                @Override
+                public int compare(SearchNode o1, SearchNode o2) {
+                    int p1 = o1.moves + o1.board.hamming();
+                    int p2 = o2.moves + o2.board.hamming();
+                    return Integer.compare(p1, p2);
+                }
+            };
 
-    private final Comparator<SearchNode> nodePriorityComparatorManhattan = new Comparator<SearchNode>() {
-        @Override
-        public int compare(SearchNode o1, SearchNode o2) {
-            int p1 = o1.moves + o1.board.manhattan();
-            int p2 = o2.moves + o2.board.manhattan();
-            return Integer.compare(p1, p2);
-        }
-    };
+    private final Comparator<SearchNode> nodePriorityComparatorManhattan =
+            new Comparator<SearchNode>() {
+                @Override
+                public int compare(SearchNode o1, SearchNode o2) {
+                    int p1 = o1.moves + o1.board.manhattan();
+                    int p2 = o2.moves + o2.board.manhattan();
+                    return Integer.compare(p1, p2);
+                }
+            };
 
     private class SearchNode {
         private SearchNode parent;
@@ -45,12 +45,12 @@ public class Solver {
 
         MinPQ<SearchNode> mainPq = new MinPQ<>(
                 initial.dimension() * initial.dimension() * 4,
-                nodePriorityComparatorHamming);
+                nodePriorityComparatorManhattan);
         mainPq.insert(new SearchNode(null, initial, 0));
 
         MinPQ<SearchNode> auxPq = new MinPQ<>(
                 initial.dimension() * initial.dimension() * 4,
-                nodePriorityComparatorHamming);
+                nodePriorityComparatorManhattan);
         auxPq.insert(new SearchNode(null, initial.twin(), 0));
 
         SearchNode mainNode =  mainPq.delMin();
@@ -106,8 +106,10 @@ public class Solver {
                 blocks[i][j] = in.readInt();
         Board initial = new Board(blocks);
 
+//        Stopwatch timer = new Stopwatch();
         // solve the puzzle
         Solver solver = new Solver(initial);
+//        double time = timer.elapsedTime();
 
         // print solution to standard output
         if (!solver.isSolvable())
@@ -117,5 +119,6 @@ public class Solver {
             for (Board board : solver.solution())
                 StdOut.println(board);
         }
+//        StdOut.printf("(%.2f seconds)\n", time);
     }
 }
