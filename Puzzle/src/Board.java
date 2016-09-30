@@ -1,17 +1,23 @@
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
     private int[][] blocks;
-    int n; // dimension
+    private int n; // dimension
 
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
     public Board(int[][] blocks) {
-        this.blocks = blocks;
         n = blocks.length;
+        this.blocks = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                this.blocks[i][j] = blocks[i][j];
+            }
+        }
     }
 
     // board dimension n
@@ -37,7 +43,8 @@ public class Board {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (blocks[i][j] != 0 && blocks[i][j] != i * n + j + 1) {
-                    r += Math.abs(i - blocks[i][j] / n) + Math.abs(j + 1 - blocks[i][j] % n);
+                    r += Math.abs(i - blocks[i][j] / n) +
+                            Math.abs(j + 1 - blocks[i][j] % n);
                 }
             }
         }
@@ -51,8 +58,11 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of blocks
     public Board twin() {
-        //TODO
-        return null;
+        int i = StdRandom.uniform(n * n - 1);
+        while (blocks[i / n][i % n] == 0) i = StdRandom.uniform(n * n - 1);
+        int j = StdRandom.uniform(n * n - 1);
+        while (i == j || blocks[j / n][j % n] == 0) j = StdRandom.uniform(n * n - 1);
+        return createBoard(i / n, i % n, j / n, j % n);
     }
 
     // does this board equal y?
@@ -79,21 +89,23 @@ public class Board {
             if (j < n) break;
         }
 
-        if (i > 0) neighbours.add(createNeighbour(i, j, i - 1, j));
-        if (i < n - 1) neighbours.add(createNeighbour(i, j, i + 1, j));
-        if (j > 0) neighbours.add(createNeighbour(i, j, i, j - 1));
-        if (j < n - 1) neighbours.add(createNeighbour(i, j, i, j + 1));
+        if (i > 0) neighbours.add(createBoard(i, j, i - 1, j));
+        if (i < n - 1) neighbours.add(createBoard(i, j, i + 1, j));
+        if (j > 0) neighbours.add(createBoard(i, j, i, j - 1));
+        if (j < n - 1) neighbours.add(createBoard(i, j, i, j + 1));
 
         return neighbours;
     }
 
-    private Board createNeighbour(int i0, int j0, int ii, int jj) {
+    // Create new board from the original one by exchanging to blocks
+    private Board createBoard(int i0, int j0, int i1, int j1) {
         int[][] aux = new int[n][n];
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++)
                 aux[i][j] = blocks[i][j];
-        aux[i0][j0] = aux[ii][jj];
-        aux[ii][jj] = 0;
+        int v = aux[i0][j0];
+        aux[i0][j0] = aux[i1][j1];
+        aux[i1][j1] = v;
         return new Board(aux);
     }
 
@@ -123,9 +135,12 @@ public class Board {
         assert b.manhattan() == 10;
         StdOut.println(b);
 
-        for(Board board : b.neighbors()) {
+        for (Board board : b.neighbors()) {
             StdOut.println("----------");
             StdOut.println(board);
         }
+
+        StdOut.println("Twin:");
+        StdOut.println(b.twin());
     }
 }

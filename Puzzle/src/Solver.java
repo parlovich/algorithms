@@ -1,67 +1,95 @@
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.MinPQ;
+import edu.princeton.cs.algs4.StdOut;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Solver {
-    private MinPQ<SearchNode> pq;
-    SearchNode solution;
+    private SearchNode solution = null;
+
+    private final Comparator<SearchNode> nodePriorityComparatorHamming = new Comparator<SearchNode>() {
+        @Override
+        public int compare(SearchNode o1, SearchNode o2) {
+            int p1 = o1.moves + o1.board.hamming();
+            int p2 = o2.moves + o2.board.hamming();
+            return Integer.compare(p1, p2);
+        }
+    };
+
+    private final Comparator<SearchNode> nodePriorityComparatorManhattan = new Comparator<SearchNode>() {
+        @Override
+        public int compare(SearchNode o1, SearchNode o2) {
+            int p1 = o1.moves + o1.board.manhattan();
+            int p2 = o2.moves + o2.board.manhattan();
+            return Integer.compare(p1, p2);
+        }
+    };
 
     private class SearchNode {
-        SearchNode parent;
-        Board board;
-        int moves;
+        private SearchNode parent;
+        private Board board;
+        private int moves;
 
         public SearchNode(SearchNode parent, Board board, int moves) {
             this.parent = parent;
             this.board = board;
             this.moves = moves;
         }
-
-        public int getPriority() {
-            return moves + board.hamming();
-        }
     }
 
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
-        pq = new MinPQ<>(100, new Comparator<SearchNode>() {
-            @Override
-            public int compare(SearchNode o1, SearchNode o2) {
-                return ((Integer)o1.getPriority()).compareTo(o2.getPriority());
-            }
-        });
-        pq.insert(new SearchNode(null, initial, 0));
+        if (initial == null)
+            throw new NullPointerException("Initial board can't be null");
 
-        solution =  pq.delMin();
-        while (!solution.board.isGoal()) {
-            for (Board board : solution.board.neighbors()) {
-                if (solution.parent != null && solution.parent.board.equals(board))
+        MinPQ<SearchNode> mainPq = new MinPQ<>(
+                initial.dimension() * initial.dimension() * 4,
+                nodePriorityComparatorHamming);
+        mainPq.insert(new SearchNode(null, initial, 0));
+
+        MinPQ<SearchNode> auxPq = new MinPQ<>(
+                initial.dimension() * initial.dimension() * 4,
+                nodePriorityComparatorHamming);
+        auxPq.insert(new SearchNode(null, initial.twin(), 0));
+
+        SearchNode mainNode =  mainPq.delMin();
+        SearchNode auxNode =  auxPq.delMin();
+        while (!mainNode.board.isGoal() && !auxNode.board.isGoal()) {
+            for (Board board : mainNode.board.neighbors()) {
+                if (mainNode.parent != null && mainNode.parent.board.equals(board))
                     continue;
-                pq.insert(new SearchNode(solution, board, solution.moves + 1));
+                mainPq.insert(new SearchNode(mainNode, board, mainNode.moves + 1));
             }
-            solution = pq.delMin();
+            for (Board board : auxNode.board.neighbors()) {
+                if (auxNode.parent != null && auxNode.parent.board.equals(board))
+                    continue;
+                auxPq.insert(new SearchNode(auxNode, board, auxNode.moves + 1));
+            }
+            mainNode = mainPq.delMin();
+            auxNode = auxPq.delMin();
         }
+        if (mainNode.board.isGoal()) solution = mainNode;
     }
 
     // is the initial board solvable?
-    public boolean isSolvable(){
-        //TODO
-        return true;
+    public boolean isSolvable() {
+        return solution != null;
     }
 
     // min number of moves to solve initial board; -1 if unsolvable
     public int moves() {
-        //TODO
-        return 0;
+        return solution == null ? -1 : solution.moves;
     }
 
     // sequence of boards in a shortest solution; null if unsolvable
     public Iterable<Board> solution() {
+        if (solution == null) return null;
+
         ArrayList<Board> boards = new ArrayList<>();
         SearchNode node = solution;
         while (node != null) {
-            boards.add(node.board);
+            boards.add(0, node.board);
             node = node.parent;
         }
         return boards;
