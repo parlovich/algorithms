@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/Puzzle/Puzzle.iml" filepath="$PROJECT_DIR$/Puzzle/Puzzle.iml" />
       <module fileurl="file://$PROJECT_DIR$/Randomized Queues and Deques/Randomized Queues and Deques.iml" filepath="$PROJECT_DIR$/Randomized Queues and Deques/Randomized Queues and Deques.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/algorithms.iml" filepath="$PROJECT_DIR$/.idea/algorithms.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kd-tree/kd-tree.iml" filepath="$PROJECT_DIR$/kd-tree/kd-tree.iml" />
     </modules>
   </component>
 </project>
