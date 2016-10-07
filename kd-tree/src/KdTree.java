@@ -63,11 +63,7 @@ public class KdTree {
     // does the set contain point p?
     public boolean contains(Point2D p) {
         if (p == null) throw new NullPointerException();
-        return get(p) != null;
-    }
-
-    public Node get(Point2D p) {
-        return get(root, p);
+        return get(root, p) != null;
     }
 
     private Node get(Node n, Point2D key) {

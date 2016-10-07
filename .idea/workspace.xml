@@ -4,7 +4,6 @@
     <list default="true" id="d43a3975-a932-4982-bf66-14e05d0287a4" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kd-tree/src/KdTree.java" afterPath="$PROJECT_DIR$/kd-tree/src/KdTree.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kd-tree/src/RangeSearchVisualizer.java" afterPath="$PROJECT_DIR$/kd-tree/src/RangeSearchVisualizer.java" />
     </list>
     <ignored path="algorithms.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -51,19 +50,17 @@
       <file leaf-file-name="KdTree.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/kd-tree/src/KdTree.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1836">
-              <caret line="108" column="31" selection-start-line="108" selection-start-column="31" selection-end-line="108" selection-end-column="31" />
+            <state relative-caret-position="238">
+              <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#647#648#0" expanded="true" />
                 <element signature="e#681#682#0" expanded="true" />
                 <element signature="e#741#742#0" expanded="true" />
                 <element signature="e#774#775#0" expanded="true" />
-                <element signature="e#1720#1721#0" expanded="true" />
-                <element signature="e#1755#1756#0" expanded="true" />
-                <element signature="e#2613#2614#0" expanded="true" />
-                <element signature="e#2663#2664#0" expanded="true" />
-                <element signature="e#3680#3689#0" expanded="true" />
+                <element signature="e#2550#2551#0" expanded="true" />
+                <element signature="e#2600#2601#0" expanded="true" />
+                <element signature="e#3617#3626#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -804,7 +801,14 @@
       <option name="project" value="LOCAL" />
       <updated>1475235058474</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="KbTree implementation &#10;">
+      <created>1475862891853</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1475862891853</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -855,7 +859,8 @@
     <MESSAGE value="Pattern Recognition initial commit" />
     <MESSAGE value="Merge branch 'master' of https://github.com/parlovich/algorithms&#10;&#10;Conflicts:&#10;&#9;Randomized Queues and Deques/src/RandomizedQueue.java&#10;" />
     <MESSAGE value="unsolvable puzzles &#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="unsolvable puzzles &#10;" />
+    <MESSAGE value="KbTree implementation &#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="KbTree implementation &#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1202,19 +1207,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/kd-tree/src/KdTree.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1836">
-          <caret line="108" column="31" selection-start-line="108" selection-start-column="31" selection-end-line="108" selection-end-column="31" />
+        <state relative-caret-position="238">
+          <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#647#648#0" expanded="true" />
             <element signature="e#681#682#0" expanded="true" />
             <element signature="e#741#742#0" expanded="true" />
             <element signature="e#774#775#0" expanded="true" />
-            <element signature="e#1720#1721#0" expanded="true" />
-            <element signature="e#1755#1756#0" expanded="true" />
-            <element signature="e#2613#2614#0" expanded="true" />
-            <element signature="e#2663#2664#0" expanded="true" />
-            <element signature="e#3680#3689#0" expanded="true" />
+            <element signature="e#2550#2551#0" expanded="true" />
+            <element signature="e#2600#2601#0" expanded="true" />
+            <element signature="e#3617#3626#0" expanded="true" />
           </folding>
         </state>
       </provider>
