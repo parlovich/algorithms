@@ -3,7 +3,6 @@ import edu.princeton.cs.algs4.*;
 import java.awt.*;
 
 public class KdTree {
-
     private Node root = null;
 
     private class Node {
@@ -52,8 +51,6 @@ public class KdTree {
             x.left = put(x.left, key, !vertical);
         else if (cmp > 0)
             x.right = put(x.right, key, !vertical);
-//        else
-//            x.val = val;
 
         x.size = 1 + size(x.left) + size(x.right);
 
@@ -132,19 +129,17 @@ public class KdTree {
         if (n == null) return;
         if (qRect.contains(n.key)) queue.enqueue(n.key);
 
-        RectHV aux;
-        if (n.vertical) {
-            aux = new RectHV(curRect.xmin(), curRect.ymin(), n.key.x(), curRect.ymax());
+        if (n.left != null) {
+            RectHV aux =  n.vertical ?
+                    new RectHV(curRect.xmin(), curRect.ymin(), n.key.x(), curRect.ymax()) :
+                    new RectHV(curRect.xmin(), curRect.ymin(), curRect.xmax(), n.key.y());
             if (qRect.intersects(aux))
                 range(n.left, queue, aux, qRect);
-            aux = new RectHV(n.key.x(), curRect.ymin(), curRect.xmax(), curRect.ymax());
-            if (qRect.intersects(aux))
-                range(n.right, queue, aux, qRect);
-        } else {
-            aux = new RectHV(curRect.xmin(), curRect.ymin(), curRect.xmax(), n.key.y());
-            if (qRect.intersects(aux))
-                range(n.left, queue, aux, qRect);
-            aux = new RectHV(curRect.xmin(), n.key.y(), curRect.xmax(), curRect.ymax());
+        }
+        if (n.right != null) {
+            RectHV aux = n.vertical ?
+                    new RectHV(n.key.x(), curRect.ymin(), curRect.xmax(), curRect.ymax()) :
+                    new RectHV(curRect.xmin(), n.key.y(), curRect.xmax(), curRect.ymax());
             if (qRect.intersects(aux))
                 range(n.right, queue, aux, qRect);
         }
@@ -171,23 +166,32 @@ public class KdTree {
             rRec = new RectHV(curRect.xmin(), n.key.y(), curRect.xmax(), curRect.ymax());
         }
 
-        if (lRec.contains(q)) {
+        if ((n.vertical && q.x() < n.key.x()) ||
+                (!n.vertical && q.y() < n.key.y())){
             if (lRec.distanceTo(q) < closest.distanceTo(q)) {
                 Point2D aux = nearest(n.left, q, lRec);
-                if (aux != null && aux.distanceSquaredTo(q) < closest.distanceSquaredTo(q)) closest = aux;
+                if (aux != null &&
+                        aux.distanceSquaredTo(q) < closest.distanceSquaredTo(q))
+                    closest = aux;
             }
             if (rRec.distanceTo(q) < closest.distanceTo(q)) {
                 Point2D aux = nearest(n.right, q, rRec);
-                if (aux != null && aux.distanceSquaredTo(q) < closest.distanceSquaredTo(q)) closest = aux;
+                if (aux != null &&
+                        aux.distanceSquaredTo(q) < closest.distanceSquaredTo(q))
+                    closest = aux;
             }
         } else {
             if (rRec.distanceTo(q) < closest.distanceTo(q)) {
                 Point2D aux = nearest(n.right, q, rRec);
-                if (aux != null && aux.distanceSquaredTo(q) < closest.distanceSquaredTo(q)) closest = aux;
+                if (aux != null &&
+                        aux.distanceSquaredTo(q) < closest.distanceSquaredTo(q))
+                    closest = aux;
             }
             if (lRec.distanceTo(q) < closest.distanceTo(q)) {
                 Point2D aux = nearest(n.left, q, lRec);
-                if (aux != null && aux.distanceSquaredTo(q) < closest.distanceSquaredTo(q)) closest = aux;
+                if (aux != null &&
+                        aux.distanceSquaredTo(q) < closest.distanceSquaredTo(q))
+                    closest = aux;
             }
         }
 
